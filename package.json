@@ -4,7 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js ",
+    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
+    "test:install-prisma-environment": "npm link vitest-environment-prisma",
+    "build": "tsup src --out-dir build",
+    "test": "vitest run --dir src/use-cases",
+    "test:watch": "vitest --dir src/use-cases",
+    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment test:create-prisma-environment",
+    "test:e2e": "vitest run --dir src/http",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +29,14 @@
     "vitest": "^0.33.0"
   },
   "dependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/jwt": "^7.2.0",
+    "@prisma/client": "^5.0.0",
+    "@types/bcrypt": "^5.0.0",
+    "bcrypt": "^5.1.0",
+    "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
-    "fastify": "^4.20.0"
+    "fastify": "^4.20.0",
+    "zod": "^3.21.4"
   }
 }
