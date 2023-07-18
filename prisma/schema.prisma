@@ -19,4 +19,6 @@ model Org {
   phone         String
   address       String
   created_at    DateTime @default(now())
+
+  @@map("orgs")
 }
