@@ -1,7 +1,6 @@
 import request from "supertest";
 import { app } from "@/app";
-import { beforeAll, describe, expect, it } from "vitest";
-import { afterEach } from "node:test";
+import { beforeAll, afterEach, describe, expect, it } from "vitest";
 
 describe("Refresh token (e2e)", () => {
   beforeAll(async () => {

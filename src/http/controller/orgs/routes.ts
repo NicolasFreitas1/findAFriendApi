@@ -12,5 +12,5 @@ export async function orgsRoutes(app: FastifyInstance) {
   app.patch("/token/refresh", refresh);
 
   /** Authenticated */
-  app.get("/me", { onRequest: [verifyJWT] }, profile);
+  app.get("/orgs/profile", { onRequest: [verifyJWT] }, profile);
 }
