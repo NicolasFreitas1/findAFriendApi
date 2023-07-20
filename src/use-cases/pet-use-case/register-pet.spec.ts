@@ -1,7 +1,6 @@
-import { compare } from "bcrypt";
+import { InMemoryPetRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { RegisterPetUseCase } from "./register-pet";
-import { InMemoryPetRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 
 let petRepository: InMemoryPetRepository;
 let sut: RegisterPetUseCase;
