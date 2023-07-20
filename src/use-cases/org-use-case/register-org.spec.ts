@@ -2,7 +2,7 @@ import { InMemoryOrgRepository } from "@/repositories/in-memory/in-memory-orgs-r
 import { compare } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 import { RegisterOrgUseCase } from "./register-org";
-import { OrgAlreadyExistsError } from "./errors/org-already-exists";
+import { OrgAlreadyExistsError } from "../errors/org-already-exists";
 
 let orgsRepository: InMemoryOrgRepository;
 let sut: RegisterOrgUseCase;

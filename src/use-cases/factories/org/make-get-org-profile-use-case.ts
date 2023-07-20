@@ -1,5 +1,5 @@
 import { PrismaOrgRepository } from "@/repositories/prisma/prisma-orgs-repository";
-import { GetOrgProfileUseCase } from "../get-org-profile";
+import { GetOrgProfileUseCase } from "../../org-use-case/get-org-profile";
 
 export function makeGetOrgProfileUseCase() {
   const orgsRepository = new PrismaOrgRepository();

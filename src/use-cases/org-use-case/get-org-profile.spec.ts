@@ -2,7 +2,7 @@ import { InMemoryOrgRepository } from "@/repositories/in-memory/in-memory-orgs-r
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 import { GetOrgProfileUseCase } from "./get-org-profile";
-import { ResourceNotFoundError } from "./errors/resource-not-found";
+import { ResourceNotFoundError } from "../errors/resource-not-found";
 
 let orgsRepository: InMemoryOrgRepository;
 let sut: GetOrgProfileUseCase;

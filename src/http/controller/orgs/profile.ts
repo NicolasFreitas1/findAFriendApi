@@ -1,4 +1,4 @@
-import { makeGetOrgProfileUseCase } from "@/use-cases/factories/make-get-org-profile-use-case";
+import { makeGetOrgProfileUseCase } from "@/use-cases/factories/org/make-get-org-profile-use-case";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function profile(request: FastifyRequest, reply: FastifyReply) {

@@ -1,5 +1,5 @@
 import { OrgAlreadyExistsError } from "@/use-cases/errors/org-already-exists";
-import { makeRegisterOrgUseCase } from "@/use-cases/factories/make-register-org-use-case";
+import { makeRegisterOrgUseCase } from "@/use-cases/factories/org/make-register-org-use-case";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

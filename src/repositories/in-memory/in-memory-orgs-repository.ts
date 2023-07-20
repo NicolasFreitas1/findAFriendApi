@@ -9,7 +9,7 @@ export class InMemoryOrgRepository implements OrgsRepository {
     const org = this.items.find((item) => item.id === id);
 
     if (!org) return null;
-    
+
     return org;
   }
 
@@ -17,7 +17,7 @@ export class InMemoryOrgRepository implements OrgsRepository {
     const org = this.items.find((item) => item.email === email);
 
     if (!org) return null;
-    
+
     return org;
   }
 
