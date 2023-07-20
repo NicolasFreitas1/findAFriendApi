@@ -13,7 +13,7 @@ describe("Register Orgs (e2e)", () => {
   });
 
   it("should be able to register", async () => {
-    const response = await request(app.server).post("/org").send({
+    const response = await request(app.server).post("/orgs").send({
       name: "Pet Org",
       email: "org@test.com",
       password: "123456",
