@@ -1,9 +1,22 @@
-import { Pet, Prisma } from "@prisma/client";
+import {
+  Age,
+  EnergyLevel,
+  Environment,
+  IndependenceLevel,
+  Pet,
+  Prisma,
+  Size,
+} from "@prisma/client";
 import { PetsRepository } from "../pets-repository";
 import { randomUUID } from "crypto";
+import { GetResult } from "@prisma/client/runtime/library";
 
 export class InMemoryPetRepository implements PetsRepository {
   public items: Pet[] = [];
+
+  async findByOrgId(orgId: string) {
+    return this.items.filter((item) => item.org_id === orgId);
+  }
 
   async create(data: Prisma.PetUncheckedCreateInput) {
     const pet = {
@@ -23,15 +36,5 @@ export class InMemoryPetRepository implements PetsRepository {
     this.items.push(pet);
 
     return pet;
-
-    // id              String         @id @default(uuid())
-    // name            String
-    // description     String
-    // age             Age
-    // size            Size
-    // energy_level    EnergyLevel
-    // indepence_level IndepenceLevel
-    // environment     Environment
-    // created_at      DateTime       @default(now())
   }
 }
