@@ -1,16 +1,20 @@
+import { prisma } from "@/lib/prisma";
 import {
-  Age,
-  EnergyLevel,
-  Environment,
-  IndependenceLevel,
-  Prisma,
-  Size,
+  Prisma
 } from "@prisma/client";
 import { PetsRepository } from "../pets-repository";
-import { prisma } from "@/lib/prisma";
-import { GetResult } from "@prisma/client/runtime/library";
 
 export class PrismaPetRepository implements PetsRepository {
+  async findByCity(city: string) {
+    const pets = await prisma.pet.findMany({
+      where: {
+        city,
+      },
+    });
+
+    return pets;
+  }
+  
   async findByOrgId(orgId: string) {
     const pets = await prisma.pet.findMany({
       where: {

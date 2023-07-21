@@ -1,9 +1,8 @@
 import { InMemoryOrgRepository } from "@/repositories/in-memory/in-memory-orgs-repository";
-import { compare, hash } from "bcrypt";
+import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
-import { OrgAlreadyExistsError } from "../errors/org-already-exists";
-import { AuthenticateOrgUseCase } from "./authenticate-org";
 import { InvalidCredentialsError } from "../errors/invalid-credentials";
+import { AuthenticateOrgUseCase } from "./authenticate-org";
 
 let orgsRepository: InMemoryOrgRepository;
 let sut: AuthenticateOrgUseCase;

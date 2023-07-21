@@ -2,9 +2,7 @@ import { InMemoryOrgRepository } from "@/repositories/in-memory/in-memory-orgs-r
 import { InMemoryPetRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
-import { ResourceNotFoundError } from "../errors/resource-not-found";
 import { GetPetsByOrgUseCase } from "./get-pets-by-org";
-import { RegisterPetUseCase } from "./register-pet";
 
 let petRepository: InMemoryPetRepository;
 let orgRepository: InMemoryOrgRepository;

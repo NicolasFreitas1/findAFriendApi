@@ -1,19 +1,17 @@
 import {
-  Age,
-  EnergyLevel,
-  Environment,
-  IndependenceLevel,
   Pet,
-  Prisma,
-  Size,
+  Prisma
 } from "@prisma/client";
-import { PetsRepository } from "../pets-repository";
 import { randomUUID } from "crypto";
-import { GetResult } from "@prisma/client/runtime/library";
+import { PetsRepository } from "../pets-repository";
 
 export class InMemoryPetRepository implements PetsRepository {
   public items: Pet[] = [];
 
+  async findByCity(city: string) {
+    return this.items.filter((item) => item.city === city);
+  }
+  
   async findByOrgId(orgId: string) {
     return this.items.filter((item) => item.org_id === orgId);
   }
