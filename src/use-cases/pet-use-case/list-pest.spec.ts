@@ -1,6 +1,7 @@
 import { InMemoryPetRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { ListPetsUseCase } from "./list-pets";
+import { ResourceNotFoundError } from "../errors/resource-not-found";
 
 let petRepository: InMemoryPetRepository;
 let sut: ListPetsUseCase;
@@ -11,7 +12,7 @@ describe("Find pets by Org Case", () => {
     sut = new ListPetsUseCase(petRepository);
   });
 
-  it("should be able to find pets by org id", async () => {
+  it("should be able to find pets by city", async () => {
     await petRepository.create({
       name: "Bob",
       description: "Bob is a dog",
@@ -43,5 +44,11 @@ describe("Find pets by Org Case", () => {
       expect.objectContaining({ city: "Criciúma" }),
       expect.objectContaining({ city: "Criciúma" }),
     ]);
+  });
+
+  it("should not be able to find pets without city", async () => {
+    await expect(() => sut.execute({ city: "" })).rejects.toBeInstanceOf(
+      ResourceNotFoundError
+    );
   });
 });

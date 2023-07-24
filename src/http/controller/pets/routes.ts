@@ -7,6 +7,6 @@ import { listPets } from "./list-pets";
 export async function petsRoutes(app: FastifyInstance) {
   app.post("/pets", { onRequest: [verifyJWT] }, register);
 
+  app.get("/pets/:city", listPets);
   app.get("/org/pets", { onRequest: [verifyJWT] }, getPetsByOrgId);
-  app.get("/pets/:city", { onRequest: [verifyJWT] }, listPets);
 }
