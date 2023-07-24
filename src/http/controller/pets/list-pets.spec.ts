@@ -29,7 +29,7 @@ describe("List Pets By City(e2e)", () => {
       });
       
     const response = await request(app.server)
-      .get("/pets/Criciúma")
+      .get("/pets/Criciúma?age=BABY")
 
     expect(response.statusCode).toEqual(200);
   });
