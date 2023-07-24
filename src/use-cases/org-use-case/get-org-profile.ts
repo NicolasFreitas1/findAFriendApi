@@ -13,7 +13,9 @@ interface GetOrgProfileUseCaseResponse {
 export class GetOrgProfileUseCase {
   constructor(private orgsRepository: OrgsRepository) {}
 
-  async execute({ orgId }: GetOrgProfileUseCaseRequest) {
+  async execute({
+    orgId,
+  }: GetOrgProfileUseCaseRequest): Promise<GetOrgProfileUseCaseResponse> {
     const org = await this.orgsRepository.findById(orgId);
 
     if (!org) throw new ResourceNotFoundError();

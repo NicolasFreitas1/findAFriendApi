@@ -52,7 +52,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   try {
     const registerPetUseCase = makeRegisterPetUseCase();
 
-    await registerPetUseCase.execute({
+    const { pet } = await registerPetUseCase.execute({
       name,
       description,
       age,
@@ -62,6 +62,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       environment,
       org_id,
     });
+
+    return reply.status(201).send({ pet });
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: error.message });
@@ -69,6 +71,4 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     throw error;
   }
-
-  return reply.status(201).send();
 }

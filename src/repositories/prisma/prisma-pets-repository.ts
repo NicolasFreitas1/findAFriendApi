@@ -1,10 +1,18 @@
 import { prisma } from "@/lib/prisma";
-import {
-  Prisma
-} from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { PetsRepository } from "../pets-repository";
 
 export class PrismaPetRepository implements PetsRepository {
+  async findById(id: string) {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return pet;
+  }
+
   async findByCity(city: string) {
     const pets = await prisma.pet.findMany({
       where: {
@@ -14,7 +22,7 @@ export class PrismaPetRepository implements PetsRepository {
 
     return pets;
   }
-  
+
   async findByOrgId(orgId: string) {
     const pets = await prisma.pet.findMany({
       where: {

@@ -4,7 +4,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export async function listPets(request: FastifyRequest, reply: FastifyReply) {
-
   const validateListParamsSchema = z.object({
     city: z.string(),
   });
@@ -13,7 +12,7 @@ export async function listPets(request: FastifyRequest, reply: FastifyReply) {
 
   const listPetsUseCase = makeListPetsUseCase();
   try {
-    const pets = await listPetsUseCase.execute({ city });
+    const { pets } = await listPetsUseCase.execute({ city });
 
     return reply.status(200).send({
       pets,
