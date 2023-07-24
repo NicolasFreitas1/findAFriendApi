@@ -1,6 +1,6 @@
 import { Pet, Prisma } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { PetsRepository } from "../pets-repository";
+import { PetFilter, PetsRepository } from "../pets-repository";
 
 export class InMemoryPetRepository implements PetsRepository {
   public items: Pet[] = [];
@@ -13,8 +13,15 @@ export class InMemoryPetRepository implements PetsRepository {
     return pet;
   }
 
-  async findByCity(city: string) {
-    return this.items.filter((item) => item.city === city);
+  async findMany(city: string, data: PetFilter) {
+    return this.items.filter(
+      (item) =>
+        item.city === city &&
+        (!data ||
+          Object.entries(data).every(
+            ([key, value]) => item[key as keyof typeof item] === value
+          ))
+    );
   }
 
   async findByOrgId(orgId: string) {
