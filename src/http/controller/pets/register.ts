@@ -1,5 +1,6 @@
 import { OrgAlreadyExistsError } from "@/use-cases/errors/org-already-exists";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found";
+import { makeCreateAdoptionRequirementsUseCase } from "@/use-cases/factories/adoption-requirements/make-create-adoption-requirements";
 import { makeRegisterPetUseCase } from "@/use-cases/factories/pet/make-register-pet";
 import {
   Age,
@@ -36,6 +37,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       Environment.MEDIUM,
       Environment.BIG,
     ]),
+    adoption_requirements: z.string().array(),
   });
 
   const {
@@ -46,12 +48,14 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     energy_level,
     independence_level,
     environment,
+    adoption_requirements,
   } = registerBodySchema.parse(request.body);
 
   const org_id = request.user.sub;
   try {
     const registerPetUseCase = makeRegisterPetUseCase();
-
+    const createAdoptionRequirementsRequestUseCase =
+      makeCreateAdoptionRequirementsUseCase();
     const { pet } = await registerPetUseCase.execute({
       name,
       description,
@@ -63,7 +67,13 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       org_id,
     });
 
-    return reply.status(201).send({ pet });
+    for (const requirements of adoption_requirements) {
+      await (
+        await createAdoptionRequirementsRequestUseCase
+      ).execute({ title: requirements, petId: pet.id });
+    }
+
+    return reply.status(201).send({ pet, adoption_requirements });
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: error.message });

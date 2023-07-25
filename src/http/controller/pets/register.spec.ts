@@ -12,7 +12,7 @@ describe("Register Pets (e2e)", () => {
     await app.close();
   });
 
-  it("should be able to register", async () => {
+  it("should be able to register a pet", async () => {
     const { token } = await createAndAuthenticateUser(app);
 
     const response = await request(app.server)
@@ -26,6 +26,7 @@ describe("Register Pets (e2e)", () => {
         energy_level: "HIGH",
         independence_level: "LOW",
         environment: "MEDIUM",
+        adoption_requirements: ["Ambiente climatizado", "Muita comida"],
       });
 
     expect(response.statusCode).toEqual(201);

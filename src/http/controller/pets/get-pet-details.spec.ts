@@ -26,6 +26,7 @@ describe("Get Pet Details (e2e)", () => {
         energy_level: "HIGH",
         independence_level: "LOW",
         environment: "MEDIUM",
+        adoption_requirements: ["Ambiente climatizado", "Muita comida"],
       });
       
     const response = await request(app.server).get(
