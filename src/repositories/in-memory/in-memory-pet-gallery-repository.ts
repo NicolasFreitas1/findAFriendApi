@@ -17,4 +17,8 @@ export class InMemoryPetGalleryRepository implements PetGalleryRepository {
 
     return photo;
   }
+
+  async findMany(petId: string) {
+    return this.items.filter((item) => item.pet_id === petId);
+  }
 }

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PetGalleryRepository } from "../pet-gallery-repository";
+import { GetResult } from "@prisma/client/runtime/library";
 
 export class PrismaPetGalleryRepository implements PetGalleryRepository {
   async create(name: string, nmStored: string, petId: string) {
@@ -12,5 +13,14 @@ export class PrismaPetGalleryRepository implements PetGalleryRepository {
     });
 
     return photo;
+  }
+  async findMany(petId: string) {
+    const photos = await prisma.photo.findMany({
+      where: {
+        pet_id: petId,
+      },
+    });
+
+    return photos;
   }
 }

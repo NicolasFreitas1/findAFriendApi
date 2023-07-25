@@ -1,22 +1,20 @@
-import { InMemoryAdoptionRequirements } from "@/repositories/in-memory/in-memory-adoption-requirements-repository";
-import { InMemoryOrgRepository } from "@/repositories/in-memory/in-memory-orgs-repository";
+import { InMemoryPetGalleryRepository } from "@/repositories/in-memory/in-memory-pet-gallery-repository";
 import { InMemoryPetRepository } from "@/repositories/in-memory/in-memory-pets-repository";
 import { beforeEach, describe, expect, it } from "vitest";
-import { CreatePetGalleryUseCase } from "./create-pet-gallery";
-import { InMemoryPetGalleryRepository } from "@/repositories/in-memory/in-memory-pet-gallery-repository";
+import { FindManyPetPhotosUseCase } from "./find-many-pet-photos";
 
 let petGalleryRepository: InMemoryPetGalleryRepository;
 let petRepository: InMemoryPetRepository;
-let sut: CreatePetGalleryUseCase;
+let sut: FindManyPetPhotosUseCase;
 
-describe("Create Pet Gallery Use Case", () => {
+describe("Find Many Pet Gallery Use Case", () => {
   beforeEach(() => {
     petGalleryRepository = new InMemoryPetGalleryRepository();
     petRepository = new InMemoryPetRepository();
-    sut = new CreatePetGalleryUseCase(petGalleryRepository);
+    sut = new FindManyPetPhotosUseCase(petGalleryRepository);
   });
 
-  it("should be able to create pet gallery", async () => {
+  it("should be able to find many pet photos", async () => {
     const createdPet = await petRepository.create({
       name: "Bob",
       description: "Bob is a dog",
@@ -29,12 +27,22 @@ describe("Create Pet Gallery Use Case", () => {
       org_id: "Org-01",
     });
 
-    const { photo } = await sut.execute({
-      name: "Photo 1",
-      nmStored: "encrypted name",
+    const photo1 = await petGalleryRepository.create(
+      "Photo 1",
+      "encrypted name",
+      createdPet.id
+    );
+
+    const photo2 = await petGalleryRepository.create(
+      "Photo 2",
+      "encrypted name",
+      createdPet.id
+    );
+
+    const { imageData } = await sut.execute({
       petId: createdPet.id,
     });
 
-    expect(photo.name).toEqual("Photo 1");
+    expect(imageData).toHaveLength(2);
   });
 });
