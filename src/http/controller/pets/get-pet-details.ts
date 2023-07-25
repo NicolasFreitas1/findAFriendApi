@@ -1,4 +1,5 @@
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found";
+import { makeFindManyAdoptionRequirementsUseCase } from "@/use-cases/factories/adoption-requirements/make-find-many-adoption-requirements";
 import { makeGetOrgProfileUseCase } from "@/use-cases/factories/org/make-get-org-profile-use-case";
 import { makeGetPetDetailsUseCase } from "@/use-cases/factories/pet/make-get-pet-details";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -16,14 +17,20 @@ export async function getPetDetails(
 
   const getPetDetails = makeGetPetDetailsUseCase();
   const orgProfileUseCase = makeGetOrgProfileUseCase();
+  const findManyAdoptionRequirementsUseCase =
+    makeFindManyAdoptionRequirementsUseCase();
 
   try {
     const { pet } = await getPetDetails.execute({ petId });
     const { org } = await orgProfileUseCase.execute({ orgId: pet.org_id });
+    const { adoptionRequirements } =
+      await findManyAdoptionRequirementsUseCase.execute({ petId });
 
-    return reply
-      .status(200)
-      .send({ pet, org: { ...org, password_hash: undefined } });
+    return reply.status(200).send({
+      pet,
+      adoptionRequirements,
+      org: { ...org, password_hash: undefined },
+    });
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
       return reply.status(404).send({ message: error.message });
