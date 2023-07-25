@@ -79,8 +79,9 @@ model Pet {
 }
 
 model Photo {
-  id   String @id @default(uuid())
-  name String
+  id          String @id @default(uuid())
+  name        String
+  name_stored String
 
   created_at DateTime @default(now())
 
