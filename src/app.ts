@@ -5,6 +5,7 @@ import { env } from "./env";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import { petsRoutes } from "./http/controller/pets/routes";
+import multer from "fastify-multer";
 
 export const app = fastify();
 
@@ -18,6 +19,8 @@ app.register(fastifyJwt, {
     expiresIn: "10m",
   },
 });
+
+app.register(multer.contentParser);
 
 app.register(fastifyCookie);
 

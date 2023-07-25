@@ -1,12 +1,13 @@
-import { OrgAlreadyExistsError } from "@/use-cases/errors/org-already-exists";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found";
 import { makeCreateAdoptionRequirementsUseCase } from "@/use-cases/factories/adoption-requirements/make-create-adoption-requirements";
+import { makeCreatePetGalleryUseCase } from "@/use-cases/factories/pet-gallery/make-create-pet-gallery-use-case";
 import { makeRegisterPetUseCase } from "@/use-cases/factories/pet/make-register-pet";
 import {
   Age,
   EnergyLevel,
   Environment,
   IndependenceLevel,
+  Photo,
   Size,
 } from "@prisma/client";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -37,7 +38,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       Environment.MEDIUM,
       Environment.BIG,
     ]),
-    adoption_requirements: z.string().array(),
+    adoption_requirements: z
+      .string()
+      .transform((data) => JSON.parse(data) as string[]),
   });
 
   const {
@@ -52,10 +55,25 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   } = registerBodySchema.parse(request.body);
 
   const org_id = request.user.sub;
+
+  const images = request.files;
+
+  console.log(images);
+
   try {
+    if (images.length <= 0) {
+      throw new ResourceNotFoundError();
+    }
+
+    if (adoption_requirements.length <= 0) {
+      throw new ResourceNotFoundError();
+    }
+
     const registerPetUseCase = makeRegisterPetUseCase();
     const createAdoptionRequirementsRequestUseCase =
       makeCreateAdoptionRequirementsUseCase();
+    const createPetGalleryUseCase = makeCreatePetGalleryUseCase();
+
     const { pet } = await registerPetUseCase.execute({
       name,
       description,
@@ -68,9 +86,18 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     });
 
     for (const requirements of adoption_requirements) {
-      await (
-        await createAdoptionRequirementsRequestUseCase
-      ).execute({ title: requirements, petId: pet.id });
+      await createAdoptionRequirementsRequestUseCase.execute({
+        title: requirements,
+        petId: pet.id,
+      });
+    }
+
+    for (const image of images) {
+      await createPetGalleryUseCase.execute({
+        name: image.originalname,
+        nmStored: image.filename!,
+        petId: pet.id,
+      });
     }
 
     return reply.status(201).send({ pet, adoption_requirements });
