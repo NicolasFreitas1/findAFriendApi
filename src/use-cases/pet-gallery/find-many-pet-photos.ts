@@ -7,7 +7,7 @@ interface FindManyPetPhotosRequestUseCase {
   petId: string;
 }
 
-interface objectImage {
+interface ObjectImage {
   data: string;
   name: string;
   id: string;
@@ -17,7 +17,7 @@ interface objectImage {
 }
 
 interface FindManyPetPhotosResponseUseCase {
-  imageData: objectImage[];
+  imageData: ObjectImage[];
 }
 export class FindManyPetPhotosUseCase {
   constructor(private petGalleryRepository: PetGalleryRepository) {}
@@ -28,7 +28,7 @@ export class FindManyPetPhotosUseCase {
     const petGallery = await this.petGalleryRepository.findMany(petId);
 
     const folderPath = process.cwd() + "/uploads/";
-    const imageData: any[] = [];
+    const imageData: ObjectImage[] = [];
 
     for (const image of petGallery) {
       const filePath = path.join(folderPath, image.name_stored);
